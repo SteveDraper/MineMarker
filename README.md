@@ -10,3 +10,9 @@
 
 ## To use 
 Copy the JAR file from build/libs/MineMarker.jar to your working directory (or set working directory there), then for full usage syntax run `java -jar MineMarker.jar` without parameters
+
+## Project Structure
+
+* Source for the runtime JAR may be found in ./src/main/java
+* Unit tests are in ./src/test/java
+* Major design decisions are documented in ./designDecisions.md
