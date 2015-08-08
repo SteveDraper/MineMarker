@@ -9,4 +9,4 @@
 * To run tests `gradlew test` (or `bash gradlew test` on LINUX)
 
 ## To use 
-Copy the JAR file from build/libs/mineMarker.jar to your working directory (or set working directory there), then for full usage syntax run `mineMarker.jar` without parameters
+Copy the JAR file from build/libs/MineMarker.jar to your working directory (or set working directory there), then for full usage syntax run `java -jar MineMarker.jar` without parameters
