@@ -26,3 +26,5 @@ I will take approach (1)
 ##Detailed Decisions
 
 1. Use of abstract base class for the minefield representation.  The operators I need are fairly obvious, but it is reasonable to ask what happens if the problem were to be scaled up.  At small scales (as per the actual problem spec as given) just keeping lists of mines and iterating over them fairly frequently is not a major issue, so we just need a simple representation.  However, at larger scales we may want to introduce more complex structures to keep things scaling better (for example in length-scale of the minefield cuboid rather than in total number of mines).  Introducing an abstract class with a simple concrete implementation is just an allowance for this and seems like good practise.
+2. The spec states that the ship starts 'in the middle' of the planar projection, but it does not state that the provided minefield will always be of an odd size.  Rather than assuming even sizes are illegal I have chosen to interpret this by rounding down, to get the expected result for odd sizes and something that seems reasonable for even sizes
+
