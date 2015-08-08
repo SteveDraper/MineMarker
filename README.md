@@ -15,4 +15,4 @@ Copy the JAR file from build/libs/MineMarker.jar to your working directory (or s
 
 * Source for the runtime JAR may be found in ./src/main/java
 * Unit tests are in ./src/test/java
-* Major design decisions are documented in ./designDecisions.md
+* Major design decisions are documented in ./designNotes.md
