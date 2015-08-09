@@ -123,7 +123,7 @@ public class SimpleMinefield implements Minefield
             int depth = mine.getZ() - xiCenterOn.getZ();
             if ( depth < 1 )
             {
-              throw new ModelException("Unexpected model state for output generation - mines at or above ship");
+              outputChar = '*';
             }
             else if ( depth <= 26 )
             {

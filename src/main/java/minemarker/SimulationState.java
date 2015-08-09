@@ -40,17 +40,31 @@ public class SimulationState
    * @return the required marking output
    * @throws ModelException
    */
-  public List<String> RunAndMark() throws ModelException
+  public List<String> runAndMark() throws ModelException
   {
     List<String> output = new ArrayList<>();
 
     do
     {
+      //  Output step counter
       output.add("Step " + (mIteration+1));
+      output.add(""); //  Blank line
+      // Output current minefield
       output.addAll(mEnvironment.getMinefield().toOutputFormat(mEnvironment.getShip().getCoordinates()));
+      output.add(""); //  Blank line
       ShipTurnOrders turnOrders = mOrders.getOrdersForTurn(mIteration);
+      //  Output current orders
+      output.add(turnOrders.toString());
+      output.add(""); //  Blank line
 
       mEnvironment.getShip().executeTurnOrders(turnOrders);
+
+      //  Drop the ship 1 Z-unit
+      mEnvironment.getShip().setCoordinates(mEnvironment.getShip().getCoordinates().displace(new Point(0,0,1)));
+      // Output resulting minefield
+      output.addAll(mEnvironment.getMinefield().toOutputFormat(mEnvironment.getShip().getCoordinates()));
+      output.add(""); //  Blank line
+
       mIteration++;
     } while( !terminal() );
 
@@ -61,10 +75,19 @@ public class SimulationState
     }
     else
     {
-      output.add("fail");
+      output.add("fail (0)");
     }
 
     return output;
+  }
+
+  /**
+   * @return Output format representation of the current minefield state
+   * @throws ModelException
+   */
+  public List<String> getMinefieldProjectionString() throws ModelException
+  {
+    return mEnvironment.getMinefield().toOutputFormat(mEnvironment.getShip().getCoordinates());
   }
 
   private boolean terminal()

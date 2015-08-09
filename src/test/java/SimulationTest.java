@@ -1,16 +1,15 @@
 import java.util.LinkedList;
+import java.util.List;
 
 import minemarker.Cuboid;
 import minemarker.Minefield;
 import minemarker.MinefieldFileParseException;
 import minemarker.MinefieldFileParser;
 import minemarker.ModelException;
-import minemarker.Point;
 import minemarker.ScriptException;
 import minemarker.ScriptFileParser;
 import minemarker.ShipOrders;
-import minemarker.ShipTurnOrders;
-import minemarker.SimulationEnvironment;
+import minemarker.SimulationState;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,9 +38,19 @@ public class SimulationTest extends Assert
        "..a" + "\n" +
        "A..",
 
-       "delta",
+       "gamma",
 
-       3,2,27,2
+       2,3,23,2,
+
+       "Step 1" + "\n\n" +
+       ".e." + "\n" +
+       "..a" + "\n" +
+       "A..\n\n" +
+       "gamma\n\n" +
+       ".d." + "\n" +
+       "..." + "\n" +
+       "z..\n\n" +
+       "fail (0)"
     });
 
     return lTests;
@@ -71,6 +80,10 @@ public class SimulationTest extends Assert
    * Expected number of mines in the field
    */
   @Parameter(value = 5) public int mNumMines;
+  /**
+   * String specifying the resulting minefield in output file format
+   */
+  @Parameter(value = 6) public String mResultingOutput;
 
 
   @Test
@@ -79,26 +92,31 @@ public class SimulationTest extends Assert
     try
     {
       Minefield minefield = MinefieldFileParser.parseString(mMinefieldSpec);
-      Point shipStartPoint = new Point(minefield.getBoundingCuboid().getSouthEastBottom().getX()/2,
-                                       minefield.getBoundingCuboid().getSouthEastBottom().getY()/2,
-                                       0);
-      SimulationEnvironment simulator = new SimulationEnvironment(minefield, shipStartPoint);
       ShipOrders orders = ScriptFileParser.parseString(mScriptSpec);
+      SimulationState simulator = new SimulationState(minefield, orders);
 
-      //  In this test we JUST apply a single turn - the simuylationState class handles
-      //  the progression of 'time' and is not the subject of this test
+      //  In this test we JUST apply a single turn
       assertEquals("Test case with only one turn", 1, orders.getNumTurnsCovered());
-      ShipTurnOrders turnOrders = orders.getOrdersForTurn(0);
 
-      simulator.getShip().executeTurnOrders(turnOrders);
+      List<String> simulationResult = simulator.runAndMark();
 
-      //  Check the results
+      //  Check the resulting minefield state
       Cuboid extent = minefield.getBoundingCuboid();
 
       assertEquals(mXSize-1, extent.getSouthEastBottom().getX() - extent.getNorthWestTop().getX());
       assertEquals(mYSize-1, extent.getSouthEastBottom().getY() - extent.getNorthWestTop().getY());
       assertEquals(mZSize-1, extent.getSouthEastBottom().getZ() - extent.getNorthWestTop().getZ());
       assertEquals(mNumMines, minefield.getNumMines());
+
+      //  Check the output format
+      String[] checkLines = mResultingOutput.split("\\r?\\n");
+      int lineNum = 0;
+
+      assertEquals(checkLines.length, simulationResult.size());
+      for(String outputLine : simulationResult)
+      {
+        assertEquals(checkLines[lineNum++], outputLine);
+      }
     }
     catch (MinefieldFileParseException | ModelException | ScriptException e)
     {

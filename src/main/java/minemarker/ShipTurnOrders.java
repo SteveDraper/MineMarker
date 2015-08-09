@@ -50,4 +50,20 @@ public class ShipTurnOrders
     return mActions;
   }
 
+  @Override
+  public String toString()
+  {
+    StringBuilder result = new StringBuilder();
+
+    for(ShipAction action : mActions)
+    {
+      if ( result.length() > 0 )
+      {
+        result.append(" ");
+      }
+      result.append(action);
+    }
+
+    return result.toString();
+  }
 }

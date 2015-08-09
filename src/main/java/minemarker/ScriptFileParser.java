@@ -1,9 +1,6 @@
 package minemarker;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,23 +18,7 @@ public class ScriptFileParser
    */
   public static ShipOrders parse(String filename) throws IOException, ScriptException
   {
-    List<String> lines = new ArrayList<String>();
-
-    BufferedReader input =  new BufferedReader(new FileReader(filename));
-    try
-    {
-        String line = null;
-        while (( line = input.readLine()) != null)
-        {
-            lines.add(line);
-        }
-    }
-    finally
-    {
-        input.close();
-    }
-
-    return parse(lines);
+    return parse(FileHelper.readLines(filename));
   }
 
   /**

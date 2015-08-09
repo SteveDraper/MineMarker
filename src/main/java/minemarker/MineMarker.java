@@ -33,7 +33,7 @@ public class MineMarker
 
             //  Create the simulation
             SimulationState simulation = new SimulationState(minefield, orders);
-            List<String> simulationResult = simulation.RunAndMark();
+            List<String> simulationResult = simulation.runAndMark();
 
             //  Echo the output to stdout
             for(String outputLine : simulationResult)
