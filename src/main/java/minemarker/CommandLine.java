@@ -31,7 +31,7 @@ public class CommandLine
       {
         return false;
       }
-    } while(!argsIterator.hasNext());
+    } while(argsIterator.hasNext());
 
     return true;
   }

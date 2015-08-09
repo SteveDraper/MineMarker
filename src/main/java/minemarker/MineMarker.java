@@ -67,7 +67,7 @@ public class MineMarker
 
 	  private static void printUsage()
 	  {
-	    System.out.println("MineMarker [-mark <minefield def filename>,<ship script filename>]");
-	    System.out.println("\t-mark - (awaiting implementation) Mark a provided script against a provided mine layout. Takes (comma-separated) filenames for the mine pattern and ship script");
+	    System.out.println("MineMarker [-mark <minefield def filename> <ship script filename>]");
+	    System.out.println("\t-mark - (awaiting implementation) Mark a provided script against a provided mine layout. Takes two filenames for the mine pattern and ship script respectively");
 	  }
 }
