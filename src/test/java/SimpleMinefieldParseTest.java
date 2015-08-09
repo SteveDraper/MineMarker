@@ -59,6 +59,18 @@ public class SimpleMinefieldParseTest extends Assert
 
        3,3,27,3,true
     });
+    lTests.add(new Object[]
+        {
+         ".",
+
+         3,3,27,3,true
+      });
+      lTests.add(new Object[]
+      {
+         "",
+
+         3,3,27,3,true
+      });
 
     return lTests;
   }

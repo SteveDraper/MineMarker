@@ -96,6 +96,13 @@ public class MinefieldFileParser
       }
     }
 
+    //  We don't allow minefields with no mines as the spec. definition doesn't really provide for sensible
+    //  (or at least useful) handling of this case
+    if ( result.getNumMines() == 0 )
+    {
+      throw new MinefieldFileParseException("Illegal minefield specification defines no mines");
+    }
+
     return result;
   }
 }
