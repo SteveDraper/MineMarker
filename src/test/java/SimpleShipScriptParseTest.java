@@ -23,13 +23,18 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class SimpleShipScriptParseTest extends Assert
 {
-  @Parameters(name="{1}")
+  /**
+   * @return Iterable set of test cases
+   */
+  @Parameters(name="{0}")
   public static Iterable<? extends Object> data()
   {
     LinkedList<Object[]> lTests = new LinkedList<>();
 
     lTests.add(new Object[]
     {
+       "Simple Scrtipt with noop",
+
        "north alpha" + "\n" +
        "\n" +
        "beta south",
@@ -41,18 +46,25 @@ public class SimpleShipScriptParseTest extends Assert
   }
 
   /**
+   * Name for the test case
+   */
+  @Parameter(value = 0) public String mTestName;
+  /**
    * String specifying the script in input file format
    */
-  @Parameter(value = 0) public String mScript;
+  @Parameter(value = 1) public String mScript;
   /**
    * Number of turns this script covers
    */
-  @Parameter(value = 1) public int mNumTurns;
+  @Parameter(value = 2) public int mNumTurns;
   /**
    * Whether this test should result in a parse exception
    */
-  @Parameter(value = 2) public boolean mShouldExcept;
+  @Parameter(value = 3) public boolean mShouldExcept;
 
+  /**
+   * Run tests on the script file parser anmd associated bits of the model
+   */
   @Test
   public void test()
   {

@@ -7,6 +7,11 @@ import java.util.List;
 
 import minemarker.Ship.ShipAction;
 
+/**
+ * Parser for the ship script input file format
+ * @author steve
+ *
+ */
 public class ScriptFileParser
 {
   /**

@@ -28,6 +28,9 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class FullSystemTest extends Assert
 {
+  /**
+   * @return Iterable set of test cases
+   */
   @Parameters(name="{1}")
   public static Iterable<? extends Object> data()
   {
@@ -85,6 +88,11 @@ public class FullSystemTest extends Assert
   @Parameter(value = 2) public String mExpectedOutputFile;
 
 
+  /**
+   * Run full-system test cases.  This test uses canned input and output files
+   * and verifies the results produced from the input files match the output files
+   * The data folder includes all the examples provided in the PDF spec
+   */
   @Test
   public void test()
   {

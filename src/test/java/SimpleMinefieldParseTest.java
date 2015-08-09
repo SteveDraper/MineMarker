@@ -24,13 +24,18 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class SimpleMinefieldParseTest extends Assert
 {
-  @Parameters(name="{1}")
+  /**
+   * @return Iterable set of test cases
+   */
+  @Parameters(name="{0}")
   public static Iterable<? extends Object> data()
   {
     LinkedList<Object[]> lTests = new LinkedList<>();
 
     lTests.add(new Object[]
     {
+       "First PDF example minefield",
+
        ".e." + "\n" +
        "..a" + "\n" +
        "A..",
@@ -39,6 +44,8 @@ public class SimpleMinefieldParseTest extends Assert
     });
     lTests.add(new Object[]
     {
+      "Illegal character",
+
        ".e." + "\n" +
        "..a" + "\n" +
        "?..",
@@ -47,6 +54,8 @@ public class SimpleMinefieldParseTest extends Assert
     });
     lTests.add(new Object[]
     {
+      "Inconsistent width",
+
        ".e." + "\n" +
        "..a" + "\n" +
        "..",
@@ -55,51 +64,56 @@ public class SimpleMinefieldParseTest extends Assert
     });
     lTests.add(new Object[]
     {
+      "Null minefield",
+
        "",
 
        3,3,27,3,true
     });
     lTests.add(new Object[]
-        {
-         ".",
+    {
+      "Null minefield case 2",
 
-         3,3,27,3,true
-      });
-      lTests.add(new Object[]
-      {
-         "",
+      ".",
 
-         3,3,27,3,true
-      });
+      3,3,27,3,true
+    });
 
     return lTests;
   }
 
   /**
+   * Name for the test case
+   */
+  @Parameter(value = 0) public String mTestName;
+  /**
    * String specifying the minefield in input file format
    */
-  @Parameter(value = 0) public String mMinefieldSpec;
+  @Parameter(value = 1) public String mMinefieldSpec;
   /**
    * Expected X size  of the resulting field
    */
-  @Parameter(value = 1) public int mXSize;
+  @Parameter(value = 2) public int mXSize;
   /**
    * Expected Y size  of the resulting field
    */
-  @Parameter(value = 2) public int mYSize;
+  @Parameter(value = 3) public int mYSize;
   /**
    * Expected Y size  of the resulting field
    */
-  @Parameter(value = 3) public int mZSize;
+  @Parameter(value = 4) public int mZSize;
   /**
    * Expected number of mines in the field
    */
-  @Parameter(value = 4) public int mNumMines;
+  @Parameter(value = 5) public int mNumMines;
   /**
    * Whether this test should result in a parse exception
    */
-  @Parameter(value = 5) public boolean mShouldExcept;
+  @Parameter(value = 6) public boolean mShouldExcept;
 
+  /**
+   * Run tests on the minefield layout parser
+   */
   @Test
   public void test()
   {

@@ -27,6 +27,9 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class SimulationTest extends Assert
 {
+  /**
+   * @return Iterable set of test cases
+   */
   @Parameters(name="{0}")
   public static Iterable<? extends Object> data()
   {
@@ -114,6 +117,9 @@ public class SimulationTest extends Assert
   @Parameter(value = 7) public String mResultingOutput;
 
 
+  /**
+   * Run simple tests on the simulation model
+   */
   @Test
   public void test()
   {

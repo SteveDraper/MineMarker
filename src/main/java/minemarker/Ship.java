@@ -10,6 +10,11 @@ import java.util.List;
  */
 public class Ship
 {
+  /**
+   * Possible actions a ship my undertake with an atomic order
+   * @author steve
+   *
+   */
   public enum ShipAction
   {
     //  Movement actions
