@@ -54,10 +54,13 @@ public class SimulationState
       output.add(""); //  Blank line
       ShipTurnOrders turnOrders = mOrders.getOrdersForTurn(mIteration);
       //  Output current orders
-      output.add(turnOrders.toString());
+      output.add(turnOrders == null ? "" : turnOrders.toString());
       output.add(""); //  Blank line
 
-      mEnvironment.getShip().executeTurnOrders(turnOrders);
+      if ( turnOrders != null )
+      {
+        mEnvironment.getShip().executeTurnOrders(turnOrders);
+      }
 
       //  Drop the ship 1 Z-unit
       mEnvironment.getShip().setCoordinates(mEnvironment.getShip().getCoordinates().displace(new Point(0,0,1)));

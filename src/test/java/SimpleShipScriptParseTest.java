@@ -3,6 +3,9 @@ import java.util.LinkedList;
 
 import minemarker.ScriptException;
 import minemarker.ScriptFileParser;
+import minemarker.Ship.ShipAction;
+import minemarker.ShipOrders;
+import minemarker.ShipTurnOrders;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,7 +34,7 @@ public class SimpleShipScriptParseTest extends Assert
        "\n" +
        "beta south",
 
-       false
+       3, false
     });
 
     return lTests;
@@ -42,16 +45,47 @@ public class SimpleShipScriptParseTest extends Assert
    */
   @Parameter(value = 0) public String mScript;
   /**
+   * Number of turns this script covers
+   */
+  @Parameter(value = 1) public int mNumTurns;
+  /**
    * Whether this test should result in a parse exception
    */
-  @Parameter(value = 1) public boolean mShouldExcept;
+  @Parameter(value = 2) public boolean mShouldExcept;
 
   @Test
   public void test()
   {
     try
     {
-      ScriptFileParser.parseString(mScript);
+      ShipOrders orders = ScriptFileParser.parseString(mScript);
+
+      assertEquals(mNumTurns, orders.getNumTurnsCovered());
+
+      //  Check the actions for each turn are as expected
+      String[] turnOrderStrings = mScript.split("\\r?\\n");
+
+      assert(mNumTurns == turnOrderStrings.length); //  Check test data self-consistency
+
+      for(int turn = 0; turn < mNumTurns; turn++)
+      {
+        ShipTurnOrders turnOrders = orders.getOrdersForTurn(turn);
+
+        if ( turnOrders == null )
+        {
+          assertEquals("Orders missing for turn " + turn, 0, turnOrderStrings[turn].length());
+        }
+        else
+        {
+          String[] turnActions = turnOrderStrings[turn].split("\\s+");
+
+          assertEquals(turnOrders.getActions().size(), turnActions.length);
+          for(int actionIndex = 0; actionIndex < turnActions.length; actionIndex++)
+          {
+            assertEquals(ShipAction.valueOf(turnActions[actionIndex]), turnOrders.getActions().get(actionIndex));
+          }
+        }
+      }
     }
     catch (ScriptException e)
     {

@@ -1,6 +1,7 @@
 package minemarker;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,9 +31,20 @@ public class ScriptFileParser
    */
   public static ShipOrders parseString(String ordersSpecification) throws ScriptException
   {
-    String[] lines = ordersSpecification.split("\\r?\\n");
+    String[] lines = ordersSpecification.split("\\r?\\n", -1);
 
-    return parse(Arrays.asList(lines));
+    //  We actually need to be sensitive to empty lines in a script, so trailing linefeed
+    //  sequences matter.  However, ignore the virtual null string the above split will give us
+    //  after the last linefeed if thats how the string ends or we'll convert a single line feed
+    //  into 2 empty lines rather than just 1
+    List<String> linesList = new ArrayList<>(Arrays.asList(lines));
+
+    if ( linesList.size() > 0 && linesList.get(linesList.size()-1).length() == 0 )
+    {
+      linesList.remove(linesList.size()-1);
+    }
+
+    return parse(linesList);
   }
 
   private static ShipOrders parse(List<String> ordersSpecification) throws ScriptException
@@ -68,10 +80,7 @@ public class ScriptFileParser
         }
       }
 
-      if ( orders != null )
-      {
-        result.setTurnOrders(turnNumber, orders);
-      }
+      result.setTurnOrders(turnNumber, orders);
       turnNumber++;
     }
 

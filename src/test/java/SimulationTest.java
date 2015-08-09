@@ -27,13 +27,15 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class SimulationTest extends Assert
 {
-  @Parameters(name="{1}")
+  @Parameters(name="{0}")
   public static Iterable<? extends Object> data()
   {
     LinkedList<Object[]> lTests = new LinkedList<>();
 
     lTests.add(new Object[]
     {
+       "Simple",
+
        ".e." + "\n" +
        "..a" + "\n" +
        "A..",
@@ -52,38 +54,64 @@ public class SimulationTest extends Assert
        "z..\n\n" +
        "fail (0)"
     });
+    lTests.add(new Object[]
+    {
+       "Empty orders",
+
+       ".e." + "\n" +
+       "..a" + "\n" +
+       "A..",
+
+       "\n",
+
+       3,3,27,3,
+
+       "Step 1" + "\n\n" +
+       ".e." + "\n" +
+       "..a" + "\n" +
+       "A..\n\n" +
+       "\n\n" +
+       ".d." + "\n" +
+       "..*" + "\n" +
+       "z..\n\n" +
+       "fail (0)"
+    });
 
     return lTests;
   }
 
   /**
+   * Name for the test instance
+   */
+  @Parameter(value = 0) public String mTestName;
+  /**
    * String specifying the minefield in input file format
    */
-  @Parameter(value = 0) public String mMinefieldSpec;
+  @Parameter(value = 1) public String mMinefieldSpec;
   /**
    * String specifying the script in input file format
    */
-  @Parameter(value = 1) public String mScriptSpec;
+  @Parameter(value = 2) public String mScriptSpec;
   /**
    * Expected X size  of the resulting field
    */
-  @Parameter(value = 2) public int mXSize;
+  @Parameter(value = 3) public int mXSize;
   /**
    * Expected Y size  of the resulting field
    */
-  @Parameter(value = 3) public int mYSize;
+  @Parameter(value = 4) public int mYSize;
   /**
    * Expected Y size  of the resulting field
    */
-  @Parameter(value = 4) public int mZSize;
+  @Parameter(value = 5) public int mZSize;
   /**
    * Expected number of mines in the field
    */
-  @Parameter(value = 5) public int mNumMines;
+  @Parameter(value = 6) public int mNumMines;
   /**
    * String specifying the resulting minefield in output file format
    */
-  @Parameter(value = 6) public String mResultingOutput;
+  @Parameter(value = 7) public String mResultingOutput;
 
 
   @Test
