@@ -1,23 +1,64 @@
 package minemarker;
 
+import java.io.IOException;
+
 /**
- * @author steve
  *  Shell class for the application JAR
+ * @author steve
  */
 public class MineMarker
 {
 	  /**
 	   * App main
-	   * @param args
+	   * @param args commandline arguments
 	   */
 	  public static void main(String[] args)
 	  {
-		  printUsage();
+	    CommandLine commandLine = new CommandLine();
+
+	    if ( !commandLine.parse(args) )
+	    {
+	      printUsage();
+	    }
+	    else
+	    {
+	      // We have a valid commandline.  What's it asking us to do
+	      if ( commandLine.getShouldMark() )
+	      {
+	        try
+          {
+            Minefield minefield = MinefieldFileParser.parse(commandLine.getMinefieldFilename());
+            ShipOrders orders = ScriptFileParser.parse(commandLine.getScriptFilename());
+
+            //  Create the simulation
+            SimulationState simulation = new SimulationState(minefield, orders);
+            String simulationResult = simulation.RunAndMark();
+
+            //  Print the output string to stdout
+            System.out.print(simulationResult);
+          }
+          catch (IOException e)
+          {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+          catch (MinefieldFileParseException e)
+          {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+          catch (ScriptException e)
+          {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+	      }
+	    }
 	  }
 
 	  private static void printUsage()
 	  {
-	    System.out.println("mineMarker [-mark <minefield def filename>,<ship script filename>]");
+	    System.out.println("MineMarker [-mark <minefield def filename>,<ship script filename>]");
 	    System.out.println("\t-mark - (awaiting implementation) Mark a provided script against a provided mine layout. Takes (comma-separated) filenames for the mine pattern and ship script");
 	  }
 }
