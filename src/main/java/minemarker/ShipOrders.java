@@ -28,9 +28,20 @@ public class ShipOrders
       {
         throw new ScriptException("Attempt to set orders for turn " + turnNumber + " multiple times");
       }
+
+      mTurnOrderList.set(turnNumber, orders);
+    }
+    else
+    {
+      //  We're not using a sparse list here since typically it won't be very sparse
+      //  so fill in the nulls
+      while ( mTurnOrderList.size() < turnNumber )
+      {
+        mTurnOrderList.add(null);
+      }
     }
 
-    mTurnOrderList.add(turnNumber, orders);
+    mTurnOrderList.add(orders);
   }
 
   /**

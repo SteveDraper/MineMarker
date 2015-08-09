@@ -68,6 +68,7 @@ public class Ship
   private final SimulationEnvironment mEnvironment;
   private Point mCoordinates = null;
   private int   mNumTorpedosFired = 0;
+  private int   mNumMovesEnacted = 0;
 
   /**
    * Construct a new Ship at a given starting location
@@ -86,6 +87,14 @@ public class Ship
   public int getNumTorpedosFired()
   {
     return mNumTorpedosFired;
+  }
+
+  /**
+   * @return the numMovesEnacted
+   */
+  public int getNumMovesEnacted()
+  {
+    return mNumMovesEnacted;
   }
 
   /**
@@ -131,6 +140,8 @@ public class Ship
       }
 
       setCoordinates(new Point(mCoordinates.getX() + deltaX, mCoordinates.getY() + deltaY, mCoordinates.getZ()));
+
+      mNumMovesEnacted++;
     }
     else if ( action.isTorpedoLaunch() )
     {
@@ -181,6 +192,8 @@ public class Ship
 
         mEnvironment.getMinefield().clearRegion(clearedRegion);
       }
+
+      mNumTorpedosFired++;
     }
   }
 

@@ -1,6 +1,7 @@
 package minemarker;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  *  Shell class for the application JAR
@@ -32,10 +33,13 @@ public class MineMarker
 
             //  Create the simulation
             SimulationState simulation = new SimulationState(minefield, orders);
-            String simulationResult = simulation.RunAndMark();
+            List<String> simulationResult = simulation.RunAndMark();
 
-            //  Print the output string to stdout
-            System.out.print(simulationResult);
+            //  Echo the output to stdout
+            for(String outputLine : simulationResult)
+            {
+              System.out.println(outputLine);
+            }
           }
           catch (IOException e)
           {
@@ -48,6 +52,11 @@ public class MineMarker
             e.printStackTrace();
           }
           catch (ScriptException e)
+          {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+          catch (ModelException e)
           {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -67,6 +67,18 @@ public class Point
   }
 
   @Override
+  public int hashCode()
+  {
+    int result = 1;
+
+    result = accumulateHash(result, mX);
+    result = accumulateHash(result, mY);
+    result = accumulateHash(result, mZ);
+
+    return result;
+  }
+
+  @Override
   public boolean equals(Object other)
   {
     if ( !(other instanceof Point) )
@@ -76,5 +88,10 @@ public class Point
 
     Point otherPoint = (Point)other;
     return (mX == otherPoint.mX && mY == otherPoint.mY && mZ == otherPoint.mZ);
+  }
+
+  private int accumulateHash(int accumulator, int toAdd)
+  {
+    return accumulator*37 + toAdd;
   }
 }

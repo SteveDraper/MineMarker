@@ -99,11 +99,11 @@ public class MinefieldFileParser
           //  We have a mine.  What is its z-depth?
           if ( mineChar >= 'a' && mineChar <= 'z' )
           {
-            z = mineChar - 'a';
+            z = mineChar - 'a' + 1;
           }
           else if ( mineChar >= 'A' && mineChar <= 'Z' )
           {
-            z = mineChar - 'A' + 26;
+            z = mineChar - 'A' + 27;
           }
           else
           {

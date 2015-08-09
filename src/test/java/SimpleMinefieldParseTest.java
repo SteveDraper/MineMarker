@@ -1,9 +1,12 @@
 import java.util.LinkedList;
+import java.util.List;
 
 import minemarker.Cuboid;
 import minemarker.Minefield;
 import minemarker.MinefieldFileParseException;
 import minemarker.MinefieldFileParser;
+import minemarker.ModelException;
+import minemarker.Point;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -93,10 +96,25 @@ public class SimpleMinefieldParseTest extends Assert
       Minefield minefield = MinefieldFileParser.parseString(mMinefieldSpec);
       Cuboid extent = minefield.getBoundingCuboid();
 
+      assertEquals(0, extent.getNorthWestTop().getX());
+      assertEquals(0, extent.getNorthWestTop().getY());
+      assertEquals(1, extent.getNorthWestTop().getZ());
       assertEquals(mXSize-1, extent.getSouthEastBottom().getX());
       assertEquals(mYSize-1, extent.getSouthEastBottom().getY());
-      assertEquals(mZSize-1, extent.getSouthEastBottom().getZ());
+      assertEquals(mZSize, extent.getSouthEastBottom().getZ());
       assertEquals(mNumMines, minefield.getNumMines());
+
+      //  Reconstruct the output form, which (since it has not be altered in any way)
+      //  should be the same as the input we parsed
+      List<String> outputLines = minefield.toOutputFormat(new Point(extent.getSouthEastBottom().getX()/2,extent.getSouthEastBottom().getY()/2,0));
+      String[] inputLines = mMinefieldSpec.split("\\r?\\n");
+      int inputLine = 0;
+
+      assertEquals(inputLines.length, outputLines.size());
+      for(String outputLine : outputLines)
+      {
+        assertEquals(outputLine, inputLines[inputLine++]);
+      }
     }
     catch (MinefieldFileParseException e)
     {
@@ -105,6 +123,12 @@ public class SimpleMinefieldParseTest extends Assert
         e.printStackTrace();
         fail("Unexpected exception");
       }
+    }
+    catch (ModelException e)
+    {
+      //  Model exceptions are always unexpected
+      e.printStackTrace();
+      fail("Unexpected exception");
     }
   }
 }

@@ -1,5 +1,7 @@
 package minemarker;
 
+import java.util.List;
+
 /**
  * Abstract interface for manipulating a minefield
  * This interface defines the operations supported, but leaves the
@@ -29,4 +31,11 @@ public interface Minefield
    * @return number of extant mines
    */
   public abstract int getNumMines();
+  /**
+   * Dump the minefield state in output format
+   * @param centerOn center-point (implicitly ship location)
+   * @return output lines as a list of lines
+   * @throws ModelException
+   */
+  public List<String> toOutputFormat(Point centerOn) throws ModelException;
 }
