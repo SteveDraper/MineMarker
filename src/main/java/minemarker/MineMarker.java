@@ -28,8 +28,18 @@ public class MineMarker
 	      {
 	        try
           {
-            Minefield minefield = MinefieldFileParser.parse(commandLine.getMinefieldFilename());
-            ShipOrders orders = ScriptFileParser.parse(commandLine.getScriptFilename());
+	          String minefieldFile = commandLine.getMinefieldFilename();
+	          String scriptFile = commandLine.getScriptFilename();
+
+	          // The marking action requires both minefield and script files to have been supplied
+	          if ( minefieldFile == null || scriptFile == null )
+	          {
+	            System.out.println("The mark action requires both minefield layout and script filenames to be supplied via -minefield and -script respectively");
+	            return;
+	          }
+
+            Minefield minefield = MinefieldFileParser.parse(minefieldFile);
+            ShipOrders orders = ScriptFileParser.parse(scriptFile);
 
             //  Create the simulation
             SimulationState simulation = new SimulationState(minefield, orders);
@@ -67,7 +77,9 @@ public class MineMarker
 
 	  private static void printUsage()
 	  {
-	    System.out.println("MineMarker [-mark <minefield def filename> <ship script filename>]");
-	    System.out.println("\t-mark - (awaiting implementation) Mark a provided script against a provided mine layout. Takes two filenames for the mine pattern and ship script respectively");
+	    System.out.println("java -jar MineMarker.jar [-mark] [-minefield <minefield def filename>] [-script <ship script filename>]");
+      System.out.println("\t-mark - Perform marking.  This action is assumed if no other actions are specified.");
+      System.out.println("\t-minefield <filename> - specifies the minefield layout file to use.");
+      System.out.println("\t-script <filename> - specifies the ship action script file to use.");
 	  }
 }

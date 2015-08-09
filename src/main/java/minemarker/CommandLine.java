@@ -11,8 +11,9 @@ import java.util.List;
  */
 public class CommandLine
 {
-  private String  mMinefieldFilename;
-  private String  mScriptFilename;
+  private String  mMinefieldFilename = null;
+  private String  mScriptFilename = null;
+  private boolean mDoMark = true;
 
   /**
    * Parse a commandline, populating properties of this object
@@ -41,7 +42,7 @@ public class CommandLine
    */
   public boolean getShouldMark()
   {
-    return true;
+    return mDoMark;
   }
 
   /**
@@ -71,18 +72,18 @@ public class CommandLine
 
     if ( option.equalsIgnoreCase("-mark") )
     {
-      //  -mark option takes two filenames as sub-parameters
-      //  so consume them
-      mMinefieldFilename = consumeStringArg(argsIterator);
-      mScriptFilename = consumeStringArg(argsIterator);
-
-      //  Both filenames must be specified
-      if ( mMinefieldFilename == null || mScriptFilename == null )
-      {
-        return false;
-      }
-
+      // Nothing to do here as mark is the default action
       return true;
+    }
+    if ( option.equalsIgnoreCase("-minefield"))
+    {
+      mMinefieldFilename = consumeStringArg(argsIterator);
+      return (mMinefieldFilename != null);
+    }
+    if ( option.equalsIgnoreCase("-script"))
+    {
+      mScriptFilename = consumeStringArg(argsIterator);
+      return (mScriptFilename != null);
     }
 
     return false;
