@@ -1,0 +1,10 @@
+west
+west
+west
+south
+south
+south
+east
+north
+east
+north alpha

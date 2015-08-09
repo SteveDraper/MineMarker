@@ -71,6 +71,20 @@ public class FullSystemTest extends Assert
       "src/test/data/output5.txt"
     });
 
+    lTests.add(new Object[]
+    {
+      "src/test/data/minefield6.txt",
+      "src/test/data/script6.txt",
+      "src/test/data/output6.txt"
+    });
+
+    lTests.add(new Object[]
+    {
+      "src/test/data/minefield7.txt",
+      "src/test/data/script7.txt",
+      "src/test/data/output7.txt"
+    });
+
     return lTests;
   }
 
