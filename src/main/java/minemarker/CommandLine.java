@@ -13,7 +13,8 @@ public class CommandLine
 {
   private String  mMinefieldFilename = null;
   private String  mScriptFilename = null;
-  private boolean mDoMark = true;
+  private boolean mDoMark = false;
+  private boolean mProduceGdl = false;
 
   /**
    * Parse a commandline, populating properties of this object
@@ -34,6 +35,20 @@ public class CommandLine
       }
     } while(argsIterator.hasNext());
 
+    if ( mProduceGdl )
+    {
+      //  Cannot also mark at the same time as producing GDL
+      if ( mDoMark )
+      {
+        return false;
+      }
+    }
+    else if ( !mDoMark )
+    {
+      //  If no action specified default to marking
+      mDoMark = true;
+    }
+
     return true;
   }
 
@@ -43,6 +58,14 @@ public class CommandLine
   public boolean getShouldMark()
   {
     return mDoMark;
+  }
+
+  /**
+   * @return whether the command specified includes a request to perform marking
+   */
+  public boolean getShouldProduceGdl()
+  {
+    return mProduceGdl;
   }
 
   /**
@@ -72,7 +95,13 @@ public class CommandLine
 
     if ( option.equalsIgnoreCase("-mark") )
     {
-      // Nothing to do here as mark is the default action
+      mDoMark = true;
+      return true;
+    }
+    if ( option.equalsIgnoreCase("-gdl") )
+    {
+      //  Change action from marking to GDL production
+      mProduceGdl = true;
       return true;
     }
     if ( option.equalsIgnoreCase("-minefield"))

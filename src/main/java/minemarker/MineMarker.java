@@ -23,10 +23,10 @@ public class MineMarker
 	    }
 	    else
 	    {
-	      // We have a valid commandline.  What's it asking us to do
-	      if ( commandLine.getShouldMark() )
-	      {
-	        try
+        try
+        {
+          // We have a valid commandline.  What's it asking us to do
+          if ( commandLine.getShouldMark() )
           {
 	          String minefieldFile = commandLine.getMinefieldFilename();
 	          String scriptFile = commandLine.getScriptFilename();
@@ -51,34 +51,50 @@ public class MineMarker
               System.out.println(outputLine);
             }
           }
-          catch (IOException e)
+          else if ( commandLine.getShouldProduceGdl() )
           {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            String minefieldFile = commandLine.getMinefieldFilename();
+
+            // The GDL production action requires a minefield file to have been supplied
+            if ( minefieldFile == null )
+            {
+              System.out.println("The gdl action requires a minefield layout to be supplied via -minefield");
+              return;
+            }
+
+            Minefield minefield = MinefieldFileParser.parse(minefieldFile);
+
+            System.out.print(new GdlProducer(minefield).getGDL());
           }
-          catch (MinefieldFileParseException e)
-          {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          }
-          catch (ScriptException e)
-          {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          }
-          catch (ModelException e)
-          {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          }
-	      }
+        }
+        catch (IOException e)
+        {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        catch (MinefieldFileParseException e)
+        {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        catch (ScriptException e)
+        {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        catch (ModelException e)
+        {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
 	    }
 	  }
 
 	  private static void printUsage()
 	  {
-	    System.out.println("java -jar MineMarker.jar [-mark] [-minefield <minefield def filename>] [-script <ship script filename>]");
+	    System.out.println("java -jar MineMarker.jar [-mark] [-gdl] [-minefield <minefield def filename>] [-script <ship script filename>]");
       System.out.println("\t-mark - Perform marking.  This action is assumed if no other actions are specified.");
+      System.out.println("\t-gdl - produce puzzle GDL for a specified minefield layout.");
       System.out.println("\t-minefield <filename> - specifies the minefield layout file to use.");
       System.out.println("\t-script <filename> - specifies the ship action script file to use.");
 	  }
